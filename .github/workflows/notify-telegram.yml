@@ -2,7 +2,9 @@ name: Notify Telegram
 
 on:
   schedule:
-    - cron: '0 21 * * *'  # 每 10 分鐘（GitHub 實際最小 5 分鐘）
+    - cron: '0 22 * * *'
+    - cron: '0 4 * * *'
+    - cron: '0 10 * * *'
   workflow_dispatch:
 
 jobs:
