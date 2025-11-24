@@ -75,7 +75,7 @@ def make_er_api():
     
         content = json.loads(response.text)
         exchange_rate = content["rates"]["HKD"]
-        formatted_output = f"💱 日元兌港元匯率：¥1 = HK${exchange_rate:.4f} 🇯🇵→🇭🇰"
+        formatted_output = f"💱 【日元兌港元匯率】\n¥1 = HK${exchange_rate:.4f} 🇯🇵→🇭🇰"
         return formatted_output
     except requests.exceptions.RequestException as e:
         print("❌ Error:", str(e))
@@ -96,8 +96,15 @@ def send_telegram_msg(msg):
 
 
 now = timestamp_to_hk_time(time.time()).strftime('%Y年%m月%d日 %H:%M:%S')
-send_telegram_msg(f"---- {now} ----")
-send_telegram_msg(make_gapi_request())
-send_telegram_msg(make_er_api())
-send_telegram_msg(f"----------------------------")
+send_telegram_msg(f"""==============================================================
+【系統時間】
+{now}
+
+{make_gapi_request()}
+
+{make_er_api()}
+
+==============================================================
+""")
+
 
