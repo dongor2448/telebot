@@ -83,7 +83,7 @@ def make_er_api():
             "【日元港元兌匯率】",
             f"🕐 最後更新 : {last_update_time_str}",
             f"💱 匯率     : ¥1 =  HK${exchange_rate:.6f} 🇯🇵→🇭🇰",
-            f"💱 匯率     : $1 = JPY¥{1/exchange_rate:.6f} 🇭🇰→🇯🇵",
+            f"💱 匯率     : $1 = JPY¥{1/exchange_rate:.4f} 🇭🇰→🇯🇵",
             f"🌐 資料來源 : {content['provider']}",
         ]
         return "\n".join(formatted_output)
@@ -105,7 +105,10 @@ def send_telegram_msg(msg):
     response.raise_for_status()
 
 
+gold_info = make_gapi_request()
+yen_info = make_er_api()
 now = timestamp_to_hk_time(time.time()).strftime('%Y年%m月%d日 %H:%M:%S')
+
 send_telegram_msg(
     "\n".join([
         "="*32,
@@ -113,9 +116,9 @@ send_telegram_msg(
         f"🕐 {now}",
         "="*32,
         "",
-        f"{make_gapi_request()}",
+        f"{gold_info}",
         "",
-        f"{make_er_api()}",
+        f"{yen_info}",
         "",
         "="*32
     ])
