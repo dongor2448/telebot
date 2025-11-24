@@ -69,29 +69,25 @@ def make_er_api():
 
     content = json.loads(response.text)
     exchange_rate = content["rates"]["HKD"]
-    return exchange_rate
-
+    formatted_output = f"💱 日元兌港元匯率：¥1 = HK${exchange_rate:.4f} 🇯🇵→🇭🇰"
+    return formatted_output
 
 
 msg1 = make_gapi_request()
 msg2 = make_er_api()
 
 
-encoded_message1 = quote_plus(msg1)
-encoded_message2 = quote_plus(msg2)
-
-
 url = f"https://api.telegram.org/bot{token}/sendMessage"
 payload1 = {
     "chat_id": chat_id,
-    "text": f"{encoded_message1}",
+    "text": f"{msg1}",
     "parse_mode": "HTML",
     "disable_web_page_preview": True
 }
 
 payload2 = {
     "chat_id": chat_id,
-    "text": f"{encoded_message2}",
+    "text": f"{msg2}",
     "parse_mode": "HTML",
     "disable_web_page_preview": True
 }
