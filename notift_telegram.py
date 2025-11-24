@@ -5,8 +5,9 @@ import os
 from urllib.parse import quote_plus
 
 
-token = os.environ["TELEGRAM_TOKEN"]
-chat_id = os.environ["TELEGRAM_ID"]
+token = os.environ["TELEGRAM_BOT_TOKEN"]
+chat_id = os.environ["TELEGRAM_CHAT_ID"]
+gold_api_token = os.environ["GOLDAPI"]
 
 
 def format_gold_price(data):
@@ -40,7 +41,7 @@ def format_gold_price(data):
 
 
 def make_gapi_request():
-    api_key = "goldapi-3tq6vsmicydn5b-io"
+    api_key = gold_api_token
     symbol = "XAU"
     curr = "USD"
     date = ""
