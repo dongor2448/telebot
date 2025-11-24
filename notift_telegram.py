@@ -68,7 +68,7 @@ def make_er_api():
     response.raise_for_status()
 
     content = json.loads(response.text)
-    exchange_rate = content["rate"]["HKD"]
+    exchange_rate = content["rates"]["HKD"]
     return exchange_rate
 
 
