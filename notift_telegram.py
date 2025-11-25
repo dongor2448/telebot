@@ -70,20 +70,33 @@ def make_gapi_request():
 
 def make_er_api():
     try:
-        response = requests.get("https://open.er-api.com/v6/latest/JPY")
+        response = requests.get("https://open.er-api.com/v6/latest/HKD")
         response.raise_for_status()
 
         content = json.loads(response.text)
-        exchange_rate = content["rates"]["HKD"]
+        exchange_rate = content["rates"]
         last_update = content['time_last_update_utc']
         dt = datetime.datetime.strptime(last_update, "%a, %d %b %Y %H:%M:%S %z").timestamp()
         last_update_time_str = timestamp_to_hk_time(dt).strftime('%Y年%m月%d日 %H:%M:%S')
 
         formatted_output = [
-            "【日元港元兌匯率】",
-            f"🕐 最後更新 : {last_update_time_str}",
-            f"💱 匯率     : ¥1 =  HK${exchange_rate:.6f} 🇯🇵→🇭🇰",
-            f"💱 匯率     : $1 = JPY¥{1/exchange_rate:.4f} 🇭🇰→🇯🇵",
+            "【港元兌外幣匯率】",
+            f"🕐 最後更新　: {last_update_time_str}",
+            f"💱 日元　　　: $1 = JPY¥{exchange_rate['JPY']:.6f} 🇭🇰→🇯🇵",
+            f"💱 英磅　　　: $1 = GBP£{exchange_rate['GBP']:.6f} 🇭🇰→🇬🇧",
+            f"💱 韓元　　　: $1 = KRW₩{exchange_rate['KRW']:.6f} 🇭🇰→🇰🇷",
+            f"💱 台幣　　　: $1 = TWD${exchange_rate['TWD']:.6f} 🇭🇰→🇹🇼",
+            f"💱 美金　　　: $1 = USD${exchange_rate['USD']:.6f} 🇭🇰→🇺🇸",
+            f"💱 新加坡元　: $1 = SGD${exchange_rate['SGD']:.6f} 🇭🇰→🇸🇬",
+            "",
+            "【外幣兌港元匯率】",
+            f"💱 日元　　　: ¥1 = HKD${1/exchange_rate['JPY']:.6f} 🇯🇵→🇭🇰",
+            f"💱 英磅　　　: £1 = HKD${1/exchange_rate['GBP']:.6f} 🇬🇧→🇭🇰",
+            f"💱 韓元　　　: ₩1 = HKD${1/exchange_rate['KRW']:.6f} 🇰🇷→🇭🇰",
+            f"💱 台幣　　　: $1 = HKD${1/exchange_rate['TWD']:.6f} 🇹🇼→🇭🇰",
+            f"💱 美金　　　: $1 = HKD${1/exchange_rate['USD']:.6f} 🇺🇸→🇭🇰",
+            f"💱 新加坡元　: $1 = HKD${1/exchange_rate['SGD']:.6f} 🇸🇬→🇭🇰",
+            "",
             f"🌐 資料來源 : {content['provider']}",
         ]
         return "\n".join(formatted_output)
